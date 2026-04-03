@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Máy Tính Tài Chính</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 500px;
+            margin: 50px auto;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 30px;
+        }
+        .input-group {
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #555;
+        }
+        input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+            box-sizing: border-box;
+        }
+        input:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+        .result-table {
+            margin-top: 30px;
+            width: 100%;
+        }
+        .result-table table {
+            width: 100%;
+            border-collapse: collapse;
+            background: #f8f9fa;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        .result-table th, .result-table td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid #eee;
+        }
+        .result-table th {
+            background: #667eea;
+            color: white;
+            font-weight: bold;
+        }
+        .result-table tr:hover {
+            background: #e3f2fd;
+        }
+        .total {
+            background: #4caf50 !important;
+            color: white !important;
+            font-size: 18px;
+            font-weight: bold;
+        }
+        button {
+            width: 100%;
+            padding: 15px;
+            background: #667eea;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+        button:hover {
+            background: #5a67d8;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🧮 Máy Tính Tài Chính</h1>
+        
+        <div class="input-group">
+            <label for="tienGoc">💰 Tiền gốc (Dòng 1):</label>
+            <input type="number" id="tienGoc" placeholder="Nhập số tiền gốc" step="0.01">
+        </div>
+
+        <button onclick="tinhToan()">🔢 Tính toán</button>
+
+        <div class="result-table" id="resultTable" style="display: none;">
+            <table>
+                <thead>
+                    <tr>
+                        <th>STT</th>
+                        <th>Mô tả</th>
+                        <th>Số tiền</th>
+                    </tr>
+                </thead>
+                <tbody id="resultBody">
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        function tinhToan() {
+            const tienGoc = parseFloat(document.getElementById('tienGoc').value) || 0;
+            
+            if (tienGoc <= 0) {
+                alert('Vui lòng nhập số tiền gốc hợp lệ!');
+                return;
+            }
+
+            // Tính toán theo yêu cầu
+            const dong2 = tienGoc * 4100;
+            const dong3 = dong2 * 0.035; // 3.5%
+            const dong4 = 200000; // Phí dịch vụ cố định
+            const tong = dong2 + dong3 + dong4;
+
+            // Hiển thị kết quả
+            const resultBody = document.getElementById('resultBody');
+            resultBody.innerHTML = `
+                <tr>
+                    <td>1</td>
+                    <td>Tiền gốc</td>
+                    <td>${tienGoc.toLocaleString('vi-VN')} ₫</td>
+                </tr>
+                <tr>
+                    <td>2</td>
+                    <td>Tiền gốc × 4100</td>
+                    <td>${dong2.toLocaleString('vi-VN')} ₫</td>
+                </tr>
+                <tr>
+                    <td>3</td>
+                    <td>Dòng 2 × 3.5%</td>
+                    <td>${dong3.toLocaleString('vi-VN')} ₫</td>
+                </tr>
+                <tr>
+                    <td>4</td>
+                    <td>Phí dịch vụ</td>
+                    <td>${dong4.toLocaleString('vi-VN')} ₫</td>
+                </tr>
+                <tr class="total">
+                    <td>5</td>
+                    <td><strong>TỔNG CỘNG</strong></td>
+                    <td><strong>${tong.toLocaleString('vi-VN')} ₫</strong></td>
+                </tr>
+            `;
+
+            document.getElementById('resultTable').style.display = 'block';
+            resultBody.scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // Tự động tính khi nhấn Enter
+        document.getElementById('tienGoc').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                tinhToan();
+            }
+        });
+
+        // Tính ngay khi thay đổi input (tùy chọn)
+        document.getElementById('tienGoc').addEventListener('input', function() {
+            // Có thể uncomment dòng dưới để tính realtime
+            // tinhToan();
+        });
+    </script>
+</body>
+</html>
